@@ -1,0 +1,132 @@
+name: Auto Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+jobs:
+  release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.21'
+
+      - name: Get dependencies
+        run: go mod download
+
+      - name: Build for all platforms
+        run: |
+          mkdir -p dist
+          
+          # Build for different platforms
+          platforms=(
+            "linux/amd64"
+            "linux/386"
+            "linux/arm64"
+            "linux/arm"
+            "windows/amd64"
+            "windows/386"
+            "darwin/amd64"
+            "darwin/arm64"
+          )
+          
+          for platform in "${platforms[@]}"; do
+            IFS='/' read -r os arch <<< "$platform"
+            output_name="file-uploader-${os}-${arch}"
+            
+            if [ "$os" = "windows" ]; then
+              output_name="${output_name}.exe"
+            fi
+            
+            echo "Building for $os/$arch..."
+            GOOS=$os GOARCH=$arch CGO_ENABLED=0 go build \
+              -ldflags="-s -w -X github.com/khasbulatabdullin/photo-uploader/internal/version.Version=${{ github.ref_name }}" \
+              -o "dist/$output_name" ./cmd/photo-uploader
+          done
+
+      - name: Create archives
+        run: |
+          cd dist
+          for binary in file-uploader-*; do
+            if [ -f "$binary" ]; then
+              if [[ "$binary" == *".exe" ]]; then
+                # Create zip for Windows
+                zip "${binary%.exe}.zip" "$binary"
+                rm "$binary"
+              else
+                # Create tar.gz for Unix-like systems
+                tar -czf "${binary}.tar.gz" "$binary"
+                rm "$binary"
+              fi
+            fi
+          done
+
+      - name: Generate release notes
+        id: release_notes
+        run: |
+          echo "notes<<EOF" >> $GITHUB_OUTPUT
+          echo "# File Uploader ${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "## 🚀 Universal File Uploader for Old Browsers and Mobile Devices" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "### 📦 Downloads" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          for file in dist/*; do
+            if [ -f "$file" ]; then
+              filename=$(basename "$file")
+              size=$(du -h "$file" | cut -f1)
+              echo "- \`$filename\` ($size)" >> $GITHUB_OUTPUT
+            fi
+          done
+          echo "" >> $GITHUB_OUTPUT
+          echo "### 🛠️ Installation" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "1. Download the appropriate binary for your platform" >> $GITHUB_OUTPUT
+          echo "2. Make it executable (Unix systems): \`chmod +x file-uploader-*\`" >> $GITHUB_OUTPUT
+          echo "3. Run: \`./file-uploader-*\` or \`file-uploader-*.exe\` (Windows)" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "### 📱 Features" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "- ✅ Universal file uploader for old browsers and mobile devices" >> $GITHUB_OUTPUT
+          echo "- ✅ Compatible with IE9+, Safari 5+, Chrome 20+, iOS 9.3.5+, Android 4.0+" >> $GITHUB_OUTPUT
+          echo "- ✅ Multiple file selection and upload" >> $GITHUB_OUTPUT
+          echo "- ✅ Automatic IP address detection" >> $GITHUB_OUTPUT
+          echo "- ✅ Progress tracking" >> $GITHUB_OUTPUT
+          echo "- ✅ Support for any file types" >> $GITHUB_OUTPUT
+          echo "- ✅ Local network access" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "### 🔧 Usage" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "1. Run the binary" >> $GITHUB_OUTPUT
+          echo "2. The server will start and show your IP address" >> $GITHUB_OUTPUT
+          echo "3. Open the URL in any browser on the same network" >> $GITHUB_OUTPUT
+          echo "4. Upload files through the web interface" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "### 📋 System Requirements" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "- Go 1.21+ (for building from source)" >> $GITHUB_OUTPUT
+          echo "- Any modern operating system" >> $GITHUB_OUTPUT
+          echo "- Network access for file sharing" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: File Uploader ${{ github.ref_name }}
+          body: ${{ steps.release_notes.outputs.notes }}
+          files: dist/*
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
