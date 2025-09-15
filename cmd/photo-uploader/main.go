@@ -45,12 +45,12 @@ func ensureUploadDir() error {
 	// Проверяем, существует ли директория
 	if _, err := os.Stat(uploadDir); os.IsNotExist(err) {
 		log.Printf("Директория %s не существует, создаем...", uploadDir)
-		
+
 		// Создаем директорию с правами 0755 (rwxr-xr-x)
 		if err := os.MkdirAll(uploadDir, 0755); err != nil {
 			return fmt.Errorf("не удалось создать директорию %s: %v", uploadDir, err)
 		}
-		
+
 		log.Printf("✅ Директория %s успешно создана", uploadDir)
 	} else if err != nil {
 		// Другая ошибка при проверке директории
@@ -62,7 +62,7 @@ func ensureUploadDir() error {
 		}
 		log.Printf("✅ Директория %s готова к использованию", uploadDir)
 	}
-	
+
 	return nil
 }
 
@@ -72,16 +72,16 @@ func checkDirPermissions(dir string) error {
 	if _, err := os.ReadDir(dir); err != nil {
 		return fmt.Errorf("нет прав на чтение директории: %v", err)
 	}
-	
+
 	// Проверяем, можем ли мы создавать файлы в директории
 	testFile := filepath.Join(dir, ".test_write_permission")
 	if err := os.WriteFile(testFile, []byte("test"), 0644); err != nil {
 		return fmt.Errorf("нет прав на запись в директорию: %v", err)
 	}
-	
+
 	// Удаляем тестовый файл
 	os.Remove(testFile)
-	
+
 	return nil
 }
 
@@ -557,7 +557,9 @@ func showErrorPage(w http.ResponseWriter, errorMsg string) {
 
 	t, _ := template.New("error").Parse(tmpl)
 	data := PageData{Error: errorMsg}
-	t.Execute(w, data)
+	if err := t.Execute(w, data); err != nil {
+		http.Error(w, "Ошибка отображения страницы", http.StatusInternalServerError)
+	}
 }
 
 // Показывает страницу успеха
@@ -616,5 +618,7 @@ func showSuccessPage(w http.ResponseWriter, successMsg string) {
 
 	t, _ := template.New("success").Parse(tmpl)
 	data := PageData{Message: successMsg}
-	t.Execute(w, data)
+	if err := t.Execute(w, data); err != nil {
+		http.Error(w, "Ошибка отображения страницы", http.StatusInternalServerError)
+	}
 }
