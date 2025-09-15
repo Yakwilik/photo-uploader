@@ -49,7 +49,7 @@ jobs:
             fi
             
             echo "Building for $os/$arch..."
-            GOOS=$os GOARCH=$arch CGO_ENABLED=0 go build \
+            env GOOS=$os GOARCH=$arch CGO_ENABLED=0 go build \
               -ldflags="-s -w -X github.com/khasbulatabdullin/photo-uploader/internal/version.Version=${{ github.ref_name }}" \
               -o "dist/$output_name" ./cmd/photo-uploader
           done
