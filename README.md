@@ -1,161 +1,170 @@
-# File Uploader
+# 📁 File Uploader
 
-Простой веб-сервер на Go для загрузки файлов, совместимый со старыми браузерами и мобильными устройствами.
+**Universal file uploader for old browsers and mobile devices**
 
-## Возможности
+A simple, lightweight web server that allows you to upload files through any browser, including old browsers like IE9+, Safari 5+, and mobile devices running iOS 9.3.5+ or Android 4.0+.
 
-- ✅ Загрузка любых файлов через веб-интерфейс
-- ✅ Совместимость со старыми браузерами (IE9+, Safari 5+, Chrome 20+)
-- ✅ Поддержка старых мобильных устройств (iOS 9.3.5, Android 4.0+)
-- ✅ Поддержка любых типов файлов (документы, изображения, видео, архивы и т.д.)
-- ✅ Ограничение размера файла (50MB)
-- ✅ Множественный выбор файлов
-- ✅ Автоматическое создание уникальных имен файлов
-- ✅ Сохранение в папку uploads/
-- ✅ Адаптивный дизайн для мобильных устройств
-- ✅ Автоматическое определение IP-адреса для подключения
+## 🚀 Features
 
-## Установка и запуск
+- ✅ **Universal compatibility** - Works with old browsers and mobile devices
+- ✅ **No dependencies** - Single executable file, ready to run
+- ✅ **Multiple file upload** - Upload multiple files at once
+- ✅ **Automatic IP detection** - Shows your local IP for easy access
+- ✅ **Progress tracking** - Real-time upload progress
+- ✅ **Any file type** - Upload any file type (50MB limit)
+- ✅ **Local network access** - Access from any device on the same network
+- ✅ **Cross-platform** - Windows, macOS, and Linux support
 
-1. Убедитесь, что у вас установлен Go версии 1.21 или выше:
-   ```bash
-   go version
-   ```
+## 📥 Quick Download & Run
 
-2. Клонируйте или скачайте проект
+### Latest Release: [v1.2.0](https://github.com/Yakwilik/photo-uploader/releases/latest)
 
-3. Перейдите в директорию проекта:
-   ```bash
-   cd photo-uploader
-   ```
+**Download the appropriate file for your system:**
 
-4. Запустите сервер:
-   ```bash
-   # Простой запуск
-   go run ./cmd/photo-uploader
-   
-   # Или используйте Makefile
-   make run
-   
-   # Запуск на другом порту
-   go run ./cmd/photo-uploader --port 9090
-   # или
-   make run-port PORT=9090
-   ```
+| Platform | Architecture | File |
+|----------|-------------|------|
+| 🪟 Windows | 64-bit | `file-uploader-windows-amd64.exe` |
+| 🪟 Windows | 32-bit | `file-uploader-windows-386.exe` |
+| 🍎 macOS | Intel | `file-uploader-darwin-amd64` |
+| 🍎 macOS | Apple Silicon (M1/M2) | `file-uploader-darwin-arm64` |
+| 🐧 Linux | 64-bit | `file-uploader-linux-amd64` |
+| 🐧 Linux | 32-bit | `file-uploader-linux-386` |
+| 🐧 Linux | ARM64 | `file-uploader-linux-arm64` |
+| 🐧 Linux | ARM | `file-uploader-linux-arm` |
 
-5. Сервер автоматически определит ваш IP-адрес и выведет его в консоль:
-   ```
-   ============================================================
-   🚀 СЕРВЕР ЗАПУЩЕН
-   ============================================================
-   📍 Локальный адрес: http://localhost:8080
-   🌐 Сетевой адрес:   http://192.168.1.100:8080
-   ============================================================
-   📱 Для подключения с мобильных устройств:
-      Откройте браузер и введите: http://192.168.1.100:8080
-   ============================================================
-   ```
+## 🔒 Important: Unblock Downloaded Files
 
-6. Используйте сетевой адрес для подключения с других устройств в той же Wi-Fi сети
+Modern operating systems block files downloaded from the internet for security. You need to unblock them first:
 
-## Структура проекта
+### 🪟 Windows
+1. Right-click the downloaded `.exe` file
+2. Select 'Properties'
+3. Check 'Unblock' at the bottom and click 'OK'
+4. Or run in PowerShell: `Unblock-File file-uploader-windows-amd64.exe`
 
-```
-photo-uploader/
-├── cmd/
-│   └── photo-uploader/
-│       └── main.go          # Основной файл сервера
-├── internal/
-│   └── version/
-│       └── version.go       # Управление версиями
-├── .github/
-│   └── workflows/           # GitHub Actions
-├── go.mod                   # Файл зависимостей Go
-├── Makefile                 # Команды для сборки
-├── README.md                # Документация
-└── uploads/                 # Директория для загруженных файлов (создается автоматически)
+### 🍎 macOS
+1. Try to run: `./file-uploader-darwin-amd64`
+2. If blocked, run: `xattr -d com.apple.quarantine file-uploader-darwin-amd64`
+3. Or: Right-click → 'Open' → 'Open' again to bypass Gatekeeper
+
+### 🐧 Linux
+1. Usually no blocking, but if needed: `chmod +x file-uploader-linux-amd64`
+2. Some distros may show warning - click 'Trust and Launch' or 'Execute'
+
+## 💻 Installation & Usage
+
+### 🪟 Windows
+```bash
+# Download file-uploader-windows-amd64.exe
+# Double-click to run, or run from command line:
+file-uploader-windows-amd64.exe
 ```
 
-## Сборка
+### 🍎 macOS
+```bash
+# Download file-uploader-darwin-amd64 (Intel) or file-uploader-darwin-arm64 (Apple Silicon)
+chmod +x file-uploader-darwin-amd64
+./file-uploader-darwin-amd64
+```
 
-### Использование Makefile
+### 🐧 Linux
+```bash
+# Download appropriate file for your architecture
+chmod +x file-uploader-linux-amd64
+./file-uploader-linux-amd64
+```
+
+## 🚀 What happens after running?
+
+1. **Server starts** on port 8080 (default)
+2. **IP address is displayed** in the terminal
+3. **Web interface opens** automatically in your browser
+4. **Upload files** by dragging & dropping or clicking to select
+5. **Access from any device** on the same network using the IP address
+
+**Example output:**
+```
+File Uploader v1.2.0 starting...
+Server running on: http://192.168.1.100:8080
+Open this URL in any browser to upload files!
+```
+
+## 🔧 Usage
+
+1. **Run the binary** on your computer
+2. **The server will start** and show your IP address
+3. **Open the URL** in any browser on the same network
+4. **Upload files** through the web interface
+
+## ❓ Troubleshooting & Tips
+
+### 🔧 Common Issues
+
+#### 🚫 Security/Blocking Issues
+- **Windows: 'Windows protected your PC'**: Click 'More info' → 'Run anyway'
+- **Windows: 'Unblock' checkbox**: Right-click file → Properties → Check 'Unblock' → OK
+- **macOS: 'Cannot be opened'**: Right-click → 'Open' → 'Open' again
+- **macOS: Quarantine error**: Run `xattr -d com.apple.quarantine file-uploader-darwin-amd64`
+- **Linux: Permission denied**: Run `chmod +x file-uploader-linux-amd64`
+
+#### ⚙️ Runtime Issues
+- **Port 8080 busy**: The app will automatically find an available port
+- **Can't access from phone**: Make sure both devices are on the same WiFi network
+- **Firewall blocking**: Allow the application through Windows/macOS firewall
+
+### 💡 Pro Tips
+- Use **Intel Macs**: Download `darwin-amd64` version
+- Use **Apple Silicon Macs** (M1/M2): Download `darwin-arm64` version
+- **Upload large files**: Drag & drop works better than clicking 'Choose Files'
+- **Multiple files**: Hold Ctrl/Cmd while selecting multiple files
+
+### 🔧 Alternative Launch Methods
+- **Windows (Command Prompt)**: Open CMD as Administrator, navigate to file, run directly
+- **macOS (Terminal)**: Open Terminal, `cd` to download folder, `./file-uploader-darwin-amd64`
+- **Linux (Terminal)**: Open terminal, `cd` to download folder, `./file-uploader-linux-amd64`
+
+### 🛑 To stop the server: Press `Ctrl+C` in the terminal
+
+## 📋 System Requirements
+
+- Any modern operating system (Windows, macOS, Linux)
+- Network access for file sharing
+- Go 1.21+ (for building from source)
+
+## 🛠️ Building from Source
+
+If you want to build the application from source:
 
 ```bash
-# Сборка для текущей платформы
-make build
+# Clone the repository
+git clone https://github.com/Yakwilik/photo-uploader.git
+cd photo-uploader
 
-# Сборка для всех платформ
-make build-all
+# Build for your platform
+go build -o file-uploader ./cmd/photo-uploader
 
-# Запуск тестов
-make test
-
-# Запуск с покрытием
-make test-coverage
-
-# Линтинг кода
-make lint
-
-# Показать версию
-make version
+# Or build for specific platforms
+GOOS=windows GOARCH=amd64 go build -o file-uploader-windows-amd64.exe ./cmd/photo-uploader
+GOOS=darwin GOARCH=arm64 go build -o file-uploader-darwin-arm64 ./cmd/photo-uploader
+GOOS=linux GOARCH=amd64 go build -o file-uploader-linux-amd64 ./cmd/photo-uploader
 ```
 
-### Ручная сборка
+## 📄 License
 
-```bash
-# Сборка для текущей платформы
-go build -o photo-uploader ./cmd/photo-uploader
+This project is open source and available under the [MIT License](LICENSE).
 
-# Сборка для Linux
-GOOS=linux GOARCH=amd64 go build -o photo-uploader-linux ./cmd/photo-uploader
+## 🤝 Contributing
 
-# Сборка для Windows
-GOOS=windows GOARCH=amd64 go build -o photo-uploader.exe ./cmd/photo-uploader
-```
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-## Совместимость со старыми браузерами
+## 📞 Support
 
-Сайт оптимизирован для работы со старыми браузерами и мобильными устройствами:
+If you encounter any issues or have questions:
 
-### Поддерживаемые браузеры:
-- **Internet Explorer 9+** (Windows)
-- **Safari 5+** (macOS, iOS)
-- **Chrome 20+** (все платформы)
-- **Firefox 15+** (все платформы)
-- **Opera 12+** (все платформы)
+1. Check the [Troubleshooting](#-troubleshooting--tips) section above
+2. Look at the [Releases](https://github.com/Yakwilik/photo-uploader/releases) for the latest version
+3. Open an [Issue](https://github.com/Yakwilik/photo-uploader/issues) on GitHub
 
-### Поддерживаемые мобильные устройства:
-- **iOS 9.3.5+** (iPhone, iPad)
-- **Android 4.0+** (телефоны, планшеты)
-- **Старые планшеты** с устаревшими браузерами
+---
 
-### Технические особенности:
-- Использует только стандартные HTML5 и CSS3 функции
-- JavaScript совместим с ES5 (без современных фич)
-- Адаптивный дизайн для мобильных устройств
-- Поддержка touch-событий
-- Оптимизированные стили для старых браузеров
-- Fallback для устаревших API
-
-## API
-
-### POST /upload
-Загружает файл на сервер.
-
-**Параметры:**
-- `photo` (file) - файл любого типа
-
-**Поддерживаемые форматы:** Любые типы файлов
-**Максимальный размер:** 50MB
-
-## Безопасность
-
-- Ограничение размера загружаемых файлов
-- Защита от path traversal атак
-- Уникальные имена файлов для предотвращения конфликтов
-- Проверка на пустые файлы
-
-## Лицензия
-
-MIT License
-
+**Made with ❤️ for easy file sharing across all devices and browsers**
