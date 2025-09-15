@@ -83,11 +83,51 @@ jobs:
           echo "" >> $GITHUB_OUTPUT
           echo "### 🛠️ Installation & Usage" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
-          echo "1. **Download** the appropriate binary for your platform (files are ready to run!)" >> $GITHUB_OUTPUT
+          echo "#### 📥 Quick Start (All Platforms)" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "1. **Download** the appropriate binary for your platform" >> $GITHUB_OUTPUT
           echo "2. **Make executable** (Unix systems only): \`chmod +x file-uploader-*\`" >> $GITHUB_OUTPUT
-          echo "3. **Run directly**: \`./file-uploader-*\` or \`file-uploader-*.exe\` (Windows)" >> $GITHUB_OUTPUT
+          echo "3. **Run directly**: \`./file-uploader-*\` or double-click \`file-uploader-*.exe\` (Windows)" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
           echo "**No extraction needed!** Files are ready to download and run immediately." >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "#### 💻 Platform-Specific Instructions" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "**🪟 Windows:**" >> $GITHUB_OUTPUT
+          echo "\`\`\`bash" >> $GITHUB_OUTPUT
+          echo "# Download file-uploader-windows-amd64.exe" >> $GITHUB_OUTPUT
+          echo "# Double-click to run, or run from command line:" >> $GITHUB_OUTPUT
+          echo "file-uploader-windows-amd64.exe" >> $GITHUB_OUTPUT
+          echo "\`\`\`" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "**🍎 macOS:**" >> $GITHUB_OUTPUT
+          echo "\`\`\`bash" >> $GITHUB_OUTPUT
+          echo "# Download file-uploader-darwin-amd64 (Intel) or file-uploader-darwin-arm64 (Apple Silicon)" >> $GITHUB_OUTPUT
+          echo "chmod +x file-uploader-darwin-amd64" >> $GITHUB_OUTPUT
+          echo "./file-uploader-darwin-amd64" >> $GITHUB_OUTPUT
+          echo "\`\`\`" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "**🐧 Linux:**" >> $GITHUB_OUTPUT
+          echo "\`\`\`bash" >> $GITHUB_OUTPUT
+          echo "# Download appropriate file for your architecture" >> $GITHUB_OUTPUT
+          echo "chmod +x file-uploader-linux-amd64" >> $GITHUB_OUTPUT
+          echo "./file-uploader-linux-amd64" >> $GITHUB_OUTPUT
+          echo "\`\`\`" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "#### 🚀 What happens after running?" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "1. **Server starts** on port 8080 (default)" >> $GITHUB_OUTPUT
+          echo "2. **IP address is displayed** in the terminal" >> $GITHUB_OUTPUT
+          echo "3. **Web interface opens** automatically in your browser" >> $GITHUB_OUTPUT
+          echo "4. **Upload files** by dragging & dropping or clicking to select" >> $GITHUB_OUTPUT
+          echo "5. **Access from any device** on the same network using the IP address" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "**Example output:**" >> $GITHUB_OUTPUT
+          echo "\`\`\`" >> $GITHUB_OUTPUT
+          echo "File Uploader v1.1.4 starting..." >> $GITHUB_OUTPUT
+          echo "Server running on: http://192.168.1.100:8080" >> $GITHUB_OUTPUT
+          echo "Open this URL in any browser to upload files!" >> $GITHUB_OUTPUT
+          echo "\`\`\`" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
           echo "### 📱 Features" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
@@ -111,6 +151,22 @@ jobs:
           echo "- Go 1.21+ (for building from source)" >> $GITHUB_OUTPUT
           echo "- Any modern operating system" >> $GITHUB_OUTPUT
           echo "- Network access for file sharing" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "### ❓ Troubleshooting & Tips" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "**🔧 Common Issues:**" >> $GITHUB_OUTPUT
+          echo "- **Permission denied**: Run \`chmod +x file-uploader-*\` (Unix only)" >> $GITHUB_OUTPUT
+          echo "- **Port 8080 busy**: The app will automatically find an available port" >> $GITHUB_OUTPUT
+          echo "- **Can't access from phone**: Make sure both devices are on the same WiFi network" >> $GITHUB_OUTPUT
+          echo "- **Windows security warning**: Click 'More info' → 'Run anyway' if Windows Defender blocks the file" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "**💡 Pro Tips:**" >> $GITHUB_OUTPUT
+          echo "- Use **Intel Macs**: Download \`darwin-amd64\` version" >> $GITHUB_OUTPUT
+          echo "- Use **Apple Silicon Macs** (M1/M2): Download \`darwin-arm64\` version" >> $GITHUB_OUTPUT
+          echo "- **Upload large files**: Drag & drop works better than clicking 'Choose Files'" >> $GITHUB_OUTPUT
+          echo "- **Multiple files**: Hold Ctrl/Cmd while selecting multiple files" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "**🛑 To stop the server:** Press \`Ctrl+C\` in the terminal" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create Release
