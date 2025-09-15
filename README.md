@@ -55,9 +55,13 @@ Modern operating systems block files downloaded from the internet for security. 
 
 ### 🪟 Windows
 ```bash
-# Download file-uploader-windows-amd64.exe
-# Double-click to run, or run from command line:
+# 1. Download file-uploader-windows-amd64.exe
+# 2. Unblock the file first:
+#    Right-click → Properties → Check 'Unblock' → OK
+#    OR run in PowerShell: Unblock-File file-uploader-windows-amd64.exe
+# 3. Now you can run it:
 file-uploader-windows-amd64.exe
+# Or double-click the file
 ```
 
 ### 🍎 macOS

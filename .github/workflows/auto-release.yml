@@ -114,9 +114,13 @@ jobs:
           echo "" >> $GITHUB_OUTPUT
           echo "**🪟 Windows:**" >> $GITHUB_OUTPUT
           echo "\`\`\`bash" >> $GITHUB_OUTPUT
-          echo "# Download file-uploader-windows-amd64.exe" >> $GITHUB_OUTPUT
-          echo "# Double-click to run, or run from command line:" >> $GITHUB_OUTPUT
+          echo "# 1. Download file-uploader-windows-amd64.exe" >> $GITHUB_OUTPUT
+          echo "# 2. Unblock the file first:" >> $GITHUB_OUTPUT
+          echo "#    Right-click → Properties → Check 'Unblock' → OK" >> $GITHUB_OUTPUT
+          echo "#    OR run in PowerShell: Unblock-File file-uploader-windows-amd64.exe" >> $GITHUB_OUTPUT
+          echo "# 3. Now you can run it:" >> $GITHUB_OUTPUT
           echo "file-uploader-windows-amd64.exe" >> $GITHUB_OUTPUT
+          echo "# Or double-click the file" >> $GITHUB_OUTPUT
           echo "\`\`\`" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
           echo "**🍎 macOS:**" >> $GITHUB_OUTPUT
