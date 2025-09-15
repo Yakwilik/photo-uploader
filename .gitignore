@@ -62,6 +62,7 @@ temp/
 # Test files
 test_*.html
 test_*.sh
+test_file.txt
 
 # Local development files
 local/
