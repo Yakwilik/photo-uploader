@@ -91,6 +91,7 @@ chmod +x file-uploader-linux-amd64
 File Uploader v1.2.0 starting...
 Server running on: http://192.168.1.100:8080
 Open this URL in any browser to upload files!
+Files will be saved to: ./uploads/
 ```
 
 ## 🔧 Usage
@@ -99,6 +100,36 @@ Open this URL in any browser to upload files!
 2. **The server will start** and show your IP address
 3. **Open the URL** in any browser on the same network
 4. **Upload files** through the web interface
+
+## 📁 Where are uploaded files stored?
+
+**All uploaded files are saved to the `uploads/` directory** in the same folder where you run the file uploader.
+
+### 📍 File Location Examples:
+
+**Windows:**
+```
+C:\Users\YourName\Downloads\file-uploader-windows-amd64.exe
+C:\Users\YourName\Downloads\uploads\          ← Your files are here
+├── photo1.jpg
+├── document.pdf
+└── video.mp4
+```
+
+**macOS/Linux:**
+```
+/Users/YourName/Downloads/file-uploader-darwin-amd64
+/Users/YourName/Downloads/uploads/             ← Your files are here
+├── photo1.jpg
+├── document.pdf
+└── video.mp4
+```
+
+### 💡 Tips:
+- **Create the uploads folder**: The app will automatically create the `uploads/` folder if it doesn't exist
+- **Full path shown**: When you start the app, it will show the full path to the uploads folder
+- **Easy access**: You can drag and drop files directly from the uploads folder
+- **Multiple files**: All files uploaded in one session will be in the same uploads folder
 
 ## ❓ Troubleshooting & Tips
 

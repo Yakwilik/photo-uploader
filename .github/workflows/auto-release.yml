@@ -66,143 +66,128 @@ jobs:
       - name: Generate release notes
         id: release_notes
         run: |
-          echo "notes<<EOF" >> $GITHUB_OUTPUT
-          echo "# File Uploader ${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          # Determine language based on tag (if tag contains '-ru' use Russian, otherwise English)
+          if [[ "${{ github.ref_name }}" == *"-ru"* ]]; then
+            LANGUAGE="ru"
+          else
+            LANGUAGE="en"
+          fi
+          
+          echo "language=$LANGUAGE" >> $GITHUB_ENV
+          
+          if [ "$LANGUAGE" = "ru" ]; then
+            echo "notes<<EOF" >> $GITHUB_OUTPUT
+            echo "# Загрузчик Файлов ${{ github.ref_name }}" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "## 🚀 Универсальный загрузчик файлов для старых браузеров и мобильных устройств" >> $GITHUB_OUTPUT
+          else
+            echo "notes<<EOF" >> $GITHUB_OUTPUT
+            echo "# File Uploader ${{ github.ref_name }}" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "## 🚀 Universal File Uploader for Old Browsers and Mobile Devices" >> $GITHUB_OUTPUT
+          fi
           echo "" >> $GITHUB_OUTPUT
-          echo "## 🚀 Universal File Uploader for Old Browsers and Mobile Devices" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "### 📦 Downloads" >> $GITHUB_OUTPUT
+          if [ "$LANGUAGE" = "ru" ]; then
+            echo "### 📦 Загрузки" >> $GITHUB_OUTPUT
+          else
+            echo "### 📦 Downloads" >> $GITHUB_OUTPUT
+          fi
           echo "" >> $GITHUB_OUTPUT
           for file in dist/*; do
             if [ -f "$file" ]; then
               filename=$(basename "$file")
               size=$(du -h "$file" | cut -f1)
-              echo "- \`$filename\` ($size) - Ready to run!" >> $GITHUB_OUTPUT
+              if [ "$LANGUAGE" = "ru" ]; then
+                echo "- \`$filename\` ($size) - Готов к запуску!" >> $GITHUB_OUTPUT
+              else
+                echo "- \`$filename\` ($size) - Ready to run!" >> $GITHUB_OUTPUT
+              fi
             fi
           done
           echo "" >> $GITHUB_OUTPUT
-          echo "### 🛠️ Installation & Usage" >> $GITHUB_OUTPUT
+          if [ "$LANGUAGE" = "ru" ]; then
+            echo "### 📖 Документация" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "- 🇷🇺 **Полная документация на русском**: [README.ru.md](https://github.com/Yakwilik/photo-uploader/blob/main/README.ru.md)" >> $GITHUB_OUTPUT
+            echo "- 🇺🇸 **Complete documentation in English**: [README.md](https://github.com/Yakwilik/photo-uploader/blob/main/README.md)" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "### 🛠️ Установка и Использование" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "#### 📥 Быстрый Старт (Все Платформы)" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "1. **Скачайте** подходящий бинарный файл для вашей платформы" >> $GITHUB_OUTPUT
+            echo "2. **Разблокируйте файл** (см. инструкции ниже)" >> $GITHUB_OUTPUT
+            echo "3. **Сделайте исполняемым** (только Unix системы): \`chmod +x file-uploader-*\`" >> $GITHUB_OUTPUT
+            echo "4. **Запустите напрямую**: \`./file-uploader-*\` или дважды щелкните \`file-uploader-*.exe\` (Windows)" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "**Распаковка не нужна!** Файлы готовы к скачиванию и запуску сразу." >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "#### 📁 Расположение файлов" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "**Все загруженные файлы сохраняются в папку \`uploads/\`** в той же директории, где вы запустили приложение." >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "**Пример:**" >> $GITHUB_OUTPUT
+            echo "\`\`\`" >> $GITHUB_OUTPUT
+            echo "C:\\Users\\ВашеИмя\\Downloads\\file-uploader-windows-amd64.exe" >> $GITHUB_OUTPUT
+            echo "C:\\Users\\ВашеИмя\\Downloads\\uploads\\          ← Ваши файлы здесь" >> $GITHUB_OUTPUT
+            echo "\`\`\`" >> $GITHUB_OUTPUT
+          else
+            echo "### 📖 Documentation" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "- 🇺🇸 **Complete documentation in English**: [README.md](https://github.com/Yakwilik/photo-uploader/blob/main/README.md)" >> $GITHUB_OUTPUT
+            echo "- 🇷🇺 **Полная документация на русском**: [README.ru.md](https://github.com/Yakwilik/photo-uploader/blob/main/README.ru.md)" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "### 🛠️ Installation & Usage" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "#### 📥 Quick Start (All Platforms)" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "1. **Download** the appropriate binary for your platform" >> $GITHUB_OUTPUT
+            echo "2. **Unblock the file** (see instructions below)" >> $GITHUB_OUTPUT
+            echo "3. **Make executable** (Unix systems only): \`chmod +x file-uploader-*\`" >> $GITHUB_OUTPUT
+            echo "4. **Run directly**: \`./file-uploader-*\` or double-click \`file-uploader-*.exe\` (Windows)" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "**No extraction needed!** Files are ready to download and run immediately." >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "#### 📁 File Location" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "**All uploaded files are saved to the \`uploads/\` directory** in the same folder where you run the application." >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "**Example:**" >> $GITHUB_OUTPUT
+            echo "\`\`\`" >> $GITHUB_OUTPUT
+            echo "C:\\Users\\YourName\\Downloads\\file-uploader-windows-amd64.exe" >> $GITHUB_OUTPUT
+            echo "C:\\Users\\YourName\\Downloads\\uploads\\          ← Your files are here" >> $GITHUB_OUTPUT
+            echo "\`\`\`" >> $GITHUB_OUTPUT
+          fi
           echo "" >> $GITHUB_OUTPUT
-          echo "#### 📥 Quick Start (All Platforms)" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "1. **Download** the appropriate binary for your platform" >> $GITHUB_OUTPUT
-          echo "2. **Make executable** (Unix systems only): \`chmod +x file-uploader-*\`" >> $GITHUB_OUTPUT
-          echo "3. **Run directly**: \`./file-uploader-*\` or double-click \`file-uploader-*.exe\` (Windows)" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "**No extraction needed!** Files are ready to download and run immediately." >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "#### 🔒 Important: Unblock Downloaded Files" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "Modern operating systems block files downloaded from the internet for security. You need to unblock them first:" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "**🪟 Windows:**" >> $GITHUB_OUTPUT
-          echo "1. Right-click the downloaded \`.exe\` file" >> $GITHUB_OUTPUT
-          echo "2. Select 'Properties'" >> $GITHUB_OUTPUT
-          echo "3. Check 'Unblock' at the bottom and click 'OK'" >> $GITHUB_OUTPUT
-          echo "4. Or run in PowerShell: \`Unblock-File file-uploader-windows-amd64.exe\`" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "**🍎 macOS:**" >> $GITHUB_OUTPUT
-          echo "1. Try to run: \`./file-uploader-darwin-amd64\`" >> $GITHUB_OUTPUT
-          echo "2. If blocked, run: \`xattr -d com.apple.quarantine file-uploader-darwin-amd64\`" >> $GITHUB_OUTPUT
-          echo "3. Or: Right-click → 'Open' → 'Open' again to bypass Gatekeeper" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "**🐧 Linux:**" >> $GITHUB_OUTPUT
-          echo "1. Usually no blocking, but if needed: \`chmod +x file-uploader-linux-amd64\`" >> $GITHUB_OUTPUT
-          echo "2. Some distros may show warning - click 'Trust and Launch' or 'Execute'" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "#### 💻 Platform-Specific Instructions" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "**🪟 Windows:**" >> $GITHUB_OUTPUT
-          echo "\`\`\`bash" >> $GITHUB_OUTPUT
-          echo "# 1. Download file-uploader-windows-amd64.exe" >> $GITHUB_OUTPUT
-          echo "# 2. Unblock the file first:" >> $GITHUB_OUTPUT
-          echo "#    Right-click → Properties → Check 'Unblock' → OK" >> $GITHUB_OUTPUT
-          echo "#    OR run in PowerShell: Unblock-File file-uploader-windows-amd64.exe" >> $GITHUB_OUTPUT
-          echo "# 3. Now you can run it:" >> $GITHUB_OUTPUT
-          echo "file-uploader-windows-amd64.exe" >> $GITHUB_OUTPUT
-          echo "# Or double-click the file" >> $GITHUB_OUTPUT
-          echo "\`\`\`" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "**🍎 macOS:**" >> $GITHUB_OUTPUT
-          echo "\`\`\`bash" >> $GITHUB_OUTPUT
-          echo "# Download file-uploader-darwin-amd64 (Intel) or file-uploader-darwin-arm64 (Apple Silicon)" >> $GITHUB_OUTPUT
-          echo "chmod +x file-uploader-darwin-amd64" >> $GITHUB_OUTPUT
-          echo "./file-uploader-darwin-amd64" >> $GITHUB_OUTPUT
-          echo "\`\`\`" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "**🐧 Linux:**" >> $GITHUB_OUTPUT
-          echo "\`\`\`bash" >> $GITHUB_OUTPUT
-          echo "# Download appropriate file for your architecture" >> $GITHUB_OUTPUT
-          echo "chmod +x file-uploader-linux-amd64" >> $GITHUB_OUTPUT
-          echo "./file-uploader-linux-amd64" >> $GITHUB_OUTPUT
-          echo "\`\`\`" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "#### 🚀 What happens after running?" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "1. **Server starts** on port 8080 (default)" >> $GITHUB_OUTPUT
-          echo "2. **IP address is displayed** in the terminal" >> $GITHUB_OUTPUT
-          echo "3. **Web interface opens** automatically in your browser" >> $GITHUB_OUTPUT
-          echo "4. **Upload files** by dragging & dropping or clicking to select" >> $GITHUB_OUTPUT
-          echo "5. **Access from any device** on the same network using the IP address" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "**Example output:**" >> $GITHUB_OUTPUT
-          echo "\`\`\`" >> $GITHUB_OUTPUT
-          echo "File Uploader v1.1.4 starting..." >> $GITHUB_OUTPUT
-          echo "Server running on: http://192.168.1.100:8080" >> $GITHUB_OUTPUT
-          echo "Open this URL in any browser to upload files!" >> $GITHUB_OUTPUT
-          echo "\`\`\`" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "### 📱 Features" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "- ✅ Universal file uploader for old browsers and mobile devices" >> $GITHUB_OUTPUT
-          echo "- ✅ Compatible with IE9+, Safari 5+, Chrome 20+, iOS 9.3.5+, Android 4.0+" >> $GITHUB_OUTPUT
-          echo "- ✅ Multiple file selection and upload" >> $GITHUB_OUTPUT
-          echo "- ✅ Automatic IP address detection" >> $GITHUB_OUTPUT
-          echo "- ✅ Progress tracking" >> $GITHUB_OUTPUT
-          echo "- ✅ Support for any file types" >> $GITHUB_OUTPUT
-          echo "- ✅ Local network access" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "### 🔧 Usage" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "1. Run the binary" >> $GITHUB_OUTPUT
-          echo "2. The server will start and show your IP address" >> $GITHUB_OUTPUT
-          echo "3. Open the URL in any browser on the same network" >> $GITHUB_OUTPUT
-          echo "4. Upload files through the web interface" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "### 📋 System Requirements" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "- Go 1.21+ (for building from source)" >> $GITHUB_OUTPUT
-          echo "- Any modern operating system" >> $GITHUB_OUTPUT
-          echo "- Network access for file sharing" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "### ❓ Troubleshooting & Tips" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "**🔧 Common Issues:**" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "**🚫 Security/Blocking Issues:**" >> $GITHUB_OUTPUT
-          echo "- **Windows: 'Windows protected your PC'**: Click 'More info' → 'Run anyway'" >> $GITHUB_OUTPUT
-          echo "- **Windows: 'Unblock' checkbox**: Right-click file → Properties → Check 'Unblock' → OK" >> $GITHUB_OUTPUT
-          echo "- **macOS: 'Cannot be opened'**: Right-click → 'Open' → 'Open' again" >> $GITHUB_OUTPUT
-          echo "- **macOS: Quarantine error**: Run \`xattr -d com.apple.quarantine file-uploader-darwin-amd64\`" >> $GITHUB_OUTPUT
-          echo "- **Linux: Permission denied**: Run \`chmod +x file-uploader-linux-amd64\`" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "**⚙️ Runtime Issues:**" >> $GITHUB_OUTPUT
-          echo "- **Port 8080 busy**: The app will automatically find an available port" >> $GITHUB_OUTPUT
-          echo "- **Can't access from phone**: Make sure both devices are on the same WiFi network" >> $GITHUB_OUTPUT
-          echo "- **Firewall blocking**: Allow the application through Windows/macOS firewall" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "**💡 Pro Tips:**" >> $GITHUB_OUTPUT
-          echo "- Use **Intel Macs**: Download \`darwin-amd64\` version" >> $GITHUB_OUTPUT
-          echo "- Use **Apple Silicon Macs** (M1/M2): Download \`darwin-arm64\` version" >> $GITHUB_OUTPUT
-          echo "- **Upload large files**: Drag & drop works better than clicking 'Choose Files'" >> $GITHUB_OUTPUT
-          echo "- **Multiple files**: Hold Ctrl/Cmd while selecting multiple files" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "**🔧 Alternative Launch Methods:**" >> $GITHUB_OUTPUT
-          echo "- **Windows (Command Prompt)**: Open CMD as Administrator, navigate to file, run directly" >> $GITHUB_OUTPUT
-          echo "- **macOS (Terminal)**: Open Terminal, \`cd\` to download folder, \`./file-uploader-darwin-amd64\`" >> $GITHUB_OUTPUT
-          echo "- **Linux (Terminal)**: Open terminal, \`cd\` to download folder, \`./file-uploader-linux-amd64\`" >> $GITHUB_OUTPUT
-          echo "" >> $GITHUB_OUTPUT
-          echo "**🛑 To stop the server:** Press \`Ctrl+C\` in the terminal" >> $GITHUB_OUTPUT
+          if [ "$LANGUAGE" = "ru" ]; then
+            echo "### 📱 Возможности" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "- ✅ Универсальный загрузчик файлов для старых браузеров и мобильных устройств" >> $GITHUB_OUTPUT
+            echo "- ✅ Совместим с IE9+, Safari 5+, Chrome 20+, iOS 9.3.5+, Android 4.0+" >> $GITHUB_OUTPUT
+            echo "- ✅ Загрузка нескольких файлов одновременно" >> $GITHUB_OUTPUT
+            echo "- ✅ Автоматическое определение IP адреса" >> $GITHUB_OUTPUT
+            echo "- ✅ Отслеживание прогресса загрузки" >> $GITHUB_OUTPUT
+            echo "- ✅ Поддержка любых типов файлов" >> $GITHUB_OUTPUT
+            echo "- ✅ Доступ по локальной сети" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "### ❓ Нужна Помощь?" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "Полная документация с инструкциями по установке, решению проблем и советами доступна в README файлах выше." >> $GITHUB_OUTPUT
+          else
+            echo "### 📱 Features" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "- ✅ Universal file uploader for old browsers and mobile devices" >> $GITHUB_OUTPUT
+            echo "- ✅ Compatible with IE9+, Safari 5+, Chrome 20+, iOS 9.3.5+, Android 4.0+" >> $GITHUB_OUTPUT
+            echo "- ✅ Multiple file selection and upload" >> $GITHUB_OUTPUT
+            echo "- ✅ Automatic IP address detection" >> $GITHUB_OUTPUT
+            echo "- ✅ Progress tracking" >> $GITHUB_OUTPUT
+            echo "- ✅ Support for any file types" >> $GITHUB_OUTPUT
+            echo "- ✅ Local network access" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "### ❓ Need Help?" >> $GITHUB_OUTPUT
+            echo "" >> $GITHUB_OUTPUT
+            echo "Complete documentation with installation instructions, troubleshooting, and tips is available in the README files above." >> $GITHUB_OUTPUT
+          fi
           echo "EOF" >> $GITHUB_OUTPUT
 
       - name: Create Release
