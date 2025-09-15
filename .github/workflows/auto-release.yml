@@ -57,22 +57,11 @@ jobs:
               -o "dist/$output_name" ./cmd/photo-uploader
           done
 
-      - name: Create archives
+      - name: Prepare binaries for release
         run: |
           cd dist
-          for binary in file-uploader-*; do
-            if [ -f "$binary" ]; then
-              if [[ "$binary" == *".exe" ]]; then
-                # Create zip for Windows
-                zip "${binary%.exe}.zip" "$binary"
-                rm "$binary"
-              else
-                # Create tar.gz for Unix-like systems
-                tar -czf "${binary}.tar.gz" "$binary"
-                rm "$binary"
-              fi
-            fi
-          done
+          echo "Preparing binaries for direct download..."
+          ls -la
 
       - name: Generate release notes
         id: release_notes
@@ -88,15 +77,17 @@ jobs:
             if [ -f "$file" ]; then
               filename=$(basename "$file")
               size=$(du -h "$file" | cut -f1)
-              echo "- \`$filename\` ($size)" >> $GITHUB_OUTPUT
+              echo "- \`$filename\` ($size) - Ready to run!" >> $GITHUB_OUTPUT
             fi
           done
           echo "" >> $GITHUB_OUTPUT
-          echo "### 🛠️ Installation" >> $GITHUB_OUTPUT
+          echo "### 🛠️ Installation & Usage" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
-          echo "1. Download the appropriate binary for your platform" >> $GITHUB_OUTPUT
-          echo "2. Make it executable (Unix systems): \`chmod +x file-uploader-*\`" >> $GITHUB_OUTPUT
-          echo "3. Run: \`./file-uploader-*\` or \`file-uploader-*.exe\` (Windows)" >> $GITHUB_OUTPUT
+          echo "1. **Download** the appropriate binary for your platform (files are ready to run!)" >> $GITHUB_OUTPUT
+          echo "2. **Make executable** (Unix systems only): \`chmod +x file-uploader-*\`" >> $GITHUB_OUTPUT
+          echo "3. **Run directly**: \`./file-uploader-*\` or \`file-uploader-*.exe\` (Windows)" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "**No extraction needed!** Files are ready to download and run immediately." >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
           echo "### 📱 Features" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
