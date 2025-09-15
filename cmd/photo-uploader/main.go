@@ -40,6 +40,51 @@ func getLocalIP() string {
 	return localAddr.IP.String()
 }
 
+// ensureUploadDir создает директорию для загрузок с проверками
+func ensureUploadDir() error {
+	// Проверяем, существует ли директория
+	if _, err := os.Stat(uploadDir); os.IsNotExist(err) {
+		log.Printf("Директория %s не существует, создаем...", uploadDir)
+		
+		// Создаем директорию с правами 0755 (rwxr-xr-x)
+		if err := os.MkdirAll(uploadDir, 0755); err != nil {
+			return fmt.Errorf("не удалось создать директорию %s: %v", uploadDir, err)
+		}
+		
+		log.Printf("✅ Директория %s успешно создана", uploadDir)
+	} else if err != nil {
+		// Другая ошибка при проверке директории
+		return fmt.Errorf("ошибка при проверке директории %s: %v", uploadDir, err)
+	} else {
+		// Директория существует, проверяем права доступа
+		if err := checkDirPermissions(uploadDir); err != nil {
+			return fmt.Errorf("проблемы с правами доступа к директории %s: %v", uploadDir, err)
+		}
+		log.Printf("✅ Директория %s готова к использованию", uploadDir)
+	}
+	
+	return nil
+}
+
+// checkDirPermissions проверяет права доступа к директории
+func checkDirPermissions(dir string) error {
+	// Проверяем, можем ли мы читать директорию
+	if _, err := os.ReadDir(dir); err != nil {
+		return fmt.Errorf("нет прав на чтение директории: %v", err)
+	}
+	
+	// Проверяем, можем ли мы создавать файлы в директории
+	testFile := filepath.Join(dir, ".test_write_permission")
+	if err := os.WriteFile(testFile, []byte("test"), 0644); err != nil {
+		return fmt.Errorf("нет прав на запись в директорию: %v", err)
+	}
+	
+	// Удаляем тестовый файл
+	os.Remove(testFile)
+	
+	return nil
+}
+
 func main() {
 	// Обработка флагов командной строки
 	var showVersion = flag.Bool("version", false, "Show version information")
@@ -52,7 +97,7 @@ func main() {
 	}
 
 	// Создаем директорию для загрузок, если она не существует
-	if err := os.MkdirAll(uploadDir, 0755); err != nil {
+	if err := ensureUploadDir(); err != nil {
 		log.Fatal("Не удалось создать директорию для загрузок:", err)
 	}
 
@@ -408,6 +453,12 @@ func uploadHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	// Убеждаемся, что директория uploads существует и доступна
+	if err := ensureUploadDir(); err != nil {
+		showErrorPage(w, "Ошибка доступа к директории загрузок: "+err.Error())
+		return
+	}
+
 	// Создаем уникальное имя файла
 	ext := filepath.Ext(handler.Filename)
 	filename := fmt.Sprintf("%d%s", time.Now().UnixNano(), ext)
@@ -437,6 +488,12 @@ func serveFileHandler(w http.ResponseWriter, r *http.Request) {
 	// Безопасность: проверяем, что путь не содержит ".."
 	if strings.Contains(r.URL.Path, "..") {
 		http.Error(w, "Запрещенный путь", http.StatusForbidden)
+		return
+	}
+
+	// Убеждаемся, что директория uploads существует
+	if err := ensureUploadDir(); err != nil {
+		http.Error(w, "Ошибка доступа к директории загрузок", http.StatusInternalServerError)
 		return
 	}
 
