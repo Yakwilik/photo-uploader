@@ -91,6 +91,25 @@ jobs:
           echo "" >> $GITHUB_OUTPUT
           echo "**No extraction needed!** Files are ready to download and run immediately." >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
+          echo "#### 🔒 Important: Unblock Downloaded Files" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "Modern operating systems block files downloaded from the internet for security. You need to unblock them first:" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "**🪟 Windows:**" >> $GITHUB_OUTPUT
+          echo "1. Right-click the downloaded \`.exe\` file" >> $GITHUB_OUTPUT
+          echo "2. Select 'Properties'" >> $GITHUB_OUTPUT
+          echo "3. Check 'Unblock' at the bottom and click 'OK'" >> $GITHUB_OUTPUT
+          echo "4. Or run in PowerShell: \`Unblock-File file-uploader-windows-amd64.exe\`" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "**🍎 macOS:**" >> $GITHUB_OUTPUT
+          echo "1. Try to run: \`./file-uploader-darwin-amd64\`" >> $GITHUB_OUTPUT
+          echo "2. If blocked, run: \`xattr -d com.apple.quarantine file-uploader-darwin-amd64\`" >> $GITHUB_OUTPUT
+          echo "3. Or: Right-click → 'Open' → 'Open' again to bypass Gatekeeper" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "**🐧 Linux:**" >> $GITHUB_OUTPUT
+          echo "1. Usually no blocking, but if needed: \`chmod +x file-uploader-linux-amd64\`" >> $GITHUB_OUTPUT
+          echo "2. Some distros may show warning - click 'Trust and Launch' or 'Execute'" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
           echo "#### 💻 Platform-Specific Instructions" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
           echo "**🪟 Windows:**" >> $GITHUB_OUTPUT
@@ -155,16 +174,29 @@ jobs:
           echo "### ❓ Troubleshooting & Tips" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
           echo "**🔧 Common Issues:**" >> $GITHUB_OUTPUT
-          echo "- **Permission denied**: Run \`chmod +x file-uploader-*\` (Unix only)" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "**🚫 Security/Blocking Issues:**" >> $GITHUB_OUTPUT
+          echo "- **Windows: 'Windows protected your PC'**: Click 'More info' → 'Run anyway'" >> $GITHUB_OUTPUT
+          echo "- **Windows: 'Unblock' checkbox**: Right-click file → Properties → Check 'Unblock' → OK" >> $GITHUB_OUTPUT
+          echo "- **macOS: 'Cannot be opened'**: Right-click → 'Open' → 'Open' again" >> $GITHUB_OUTPUT
+          echo "- **macOS: Quarantine error**: Run \`xattr -d com.apple.quarantine file-uploader-darwin-amd64\`" >> $GITHUB_OUTPUT
+          echo "- **Linux: Permission denied**: Run \`chmod +x file-uploader-linux-amd64\`" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "**⚙️ Runtime Issues:**" >> $GITHUB_OUTPUT
           echo "- **Port 8080 busy**: The app will automatically find an available port" >> $GITHUB_OUTPUT
           echo "- **Can't access from phone**: Make sure both devices are on the same WiFi network" >> $GITHUB_OUTPUT
-          echo "- **Windows security warning**: Click 'More info' → 'Run anyway' if Windows Defender blocks the file" >> $GITHUB_OUTPUT
+          echo "- **Firewall blocking**: Allow the application through Windows/macOS firewall" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
           echo "**💡 Pro Tips:**" >> $GITHUB_OUTPUT
           echo "- Use **Intel Macs**: Download \`darwin-amd64\` version" >> $GITHUB_OUTPUT
           echo "- Use **Apple Silicon Macs** (M1/M2): Download \`darwin-arm64\` version" >> $GITHUB_OUTPUT
           echo "- **Upload large files**: Drag & drop works better than clicking 'Choose Files'" >> $GITHUB_OUTPUT
           echo "- **Multiple files**: Hold Ctrl/Cmd while selecting multiple files" >> $GITHUB_OUTPUT
+          echo "" >> $GITHUB_OUTPUT
+          echo "**🔧 Alternative Launch Methods:**" >> $GITHUB_OUTPUT
+          echo "- **Windows (Command Prompt)**: Open CMD as Administrator, navigate to file, run directly" >> $GITHUB_OUTPUT
+          echo "- **macOS (Terminal)**: Open Terminal, \`cd\` to download folder, \`./file-uploader-darwin-amd64\`" >> $GITHUB_OUTPUT
+          echo "- **Linux (Terminal)**: Open terminal, \`cd\` to download folder, \`./file-uploader-linux-amd64\`" >> $GITHUB_OUTPUT
           echo "" >> $GITHUB_OUTPUT
           echo "**🛑 To stop the server:** Press \`Ctrl+C\` in the terminal" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
